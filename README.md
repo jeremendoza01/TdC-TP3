@@ -15,7 +15,7 @@ El programa procesa una expresión regular ingresada por el usuario, la conviert
 * 🔹 **Soporte de Operadores:** El simulador soporta operadores de clausura de Kleene (`*`), clausura positiva (`+`), unión o alternancia (`|`) y agrupaciones con paréntesis `()`.
 * 🔹 **Concatenación Implícita:** El algoritmo analiza la expresión regular e inyecta automáticamente un punto (`.`) para representar las concatenaciones implícitas entre caracteres.
 * 🔹 **Conversión Posfija:** Transforma la expresión regular tradicional (infija) a notación posfija (Reverse Polish Notation) para facilitar la construcción del autómata respetando la precedencia de los operadores.
-* 🔹 **Transiciones Épsilon:** Las transiciones vacías o épsilon (ε) están representadas internamente por la letra `'E'`[cite: 2].
+* 🔹 **Transiciones Épsilon:** Las transiciones vacías o épsilon (ε) están representadas internamente por la letra `'E'`.
 * 🔹 **Reporte Detallado:** Al construir el autómata, el programa imprime por consola la cantidad total de estados creados, el estado inicial, el estado final y la tabla de transiciones completa.
 * 🔹 **Simulación Interactiva:** Una vez construido el AFN, el usuario puede ingresar cadenas de texto continuamente para verificar si son aceptadas o rechazadas por el lenguaje, hasta que se ingresa la palabra `salir` para terminar la ejecución.
 
