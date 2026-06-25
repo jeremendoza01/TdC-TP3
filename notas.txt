@@ -1,6 +1,0 @@
-El algoritmo de Thompson desarma la expresión en sus partes más pequeñas y va resolviendo todo de adentro hacia afuera (o de izquierda a derecha en tu notación posfija). 
-La expresión (a|b)*abb, cuando tu programa la mastica y le clava los puntos de concatenación implícita, en notación posfija queda como: ab|*a.b.b..  
-1_Lee a: Crea un mini-autómata base con los estados q0 (inicio) y q1 (fin).  2_Lee b: Crea otro mini-autómata base con q2 y q3.  
-3_Lee | (Unión): Agarra los dos pedacitos anteriores y los envuelve creando un nuevo estado inicial (q4) y un nuevo estado final (q5). 
-Si mirás tu tabla, ves perfecto que q4 tira transiciones épsilon hacia q0 y q2.  
-4_Lee * (Clausura de Kleene): La regla de Thompson para el asterisco dice que tenés que agarrar el fragmento que tenés (en este caso, todo el bloque de la unión) y envolverlo otra vez con un nuevo estado inicial y un nuevo estado final. En este paso exacto, la compu crea q6 (como el nuevo inicio de la clausura) y q7 (como el fin).  Ahí es donde nace tu q6 como la puerta de entrada a toda esa primera parte de la expresión.
