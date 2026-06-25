@@ -1,0 +1,36 @@
+2. Construcción de Thompson y el famoso FragmentoAFN algoritmo de Thompson funciona descomponiendo la expresión regular en sus partes más pequeñas (caracteres literales, uniones, concatenaciones). 
+Para cada una de esas partecitas, el algoritmo crea un "mini-autómata" que siempre tiene un estado inicial y un estado final.  
+En nuestro código de C, un FragmentoAFN es la estructura que representa exactamente a ese mini-autómata. Si te fijás en el código, es un struct re simple que solo guarda dos punteros:
+estadoInicial: Dónde arranca ese pedacito.
+estadoFinal: Dónde termina.
+¿Cómo funciona esta parte del código?
+Lo hace de forma recursiva armando un rompecabezas desde las piezas más chicas a las más grandes, uniéndolas con transiciones vacías o épsilon ('E') para no consumir caracteres de más.  
+
+La Pila de Fragmentos: Usamos un array llamado pilaFragmentos para ir guardando estos mini-autómatas temporales mientras leemos la expresión.
+Caso Base (Las letras): Si el código lee una letra como la "a", llama a crearFragmentoBase(). Esto crea un estado de inicio, tira una flecha con la letra "a", crea un estado de fin, lo empaqueta en un FragmentoAFN y lo empuja a la pila.
+
+Los Operadores: Cuando el código lee un operador matemático (como la unión | o la concatenación .), sabe que tiene que agarrar piezas que ya armó. Hace un "pop" (saca) de los últimos fragmentos de la pila, crea estados nuevos, los une con flechas épsilon ('E') según las reglas de Thompson, y vuelve a empujar ese "super-fragmento" a la pila.
+
+Al final del ciclo, todo se redujo a un solo FragmentoAFN gigante en la pila: tu autómata completo listo para usar.
+
+3. Parser: Infija a Posfija (Shunting Yard)La notación "infija" es como escribimos nosotros normalmente: (a|b)*c. 
+
+El problema es que a la computadora le cuesta horrores leer eso de izquierda a derecha porque los paréntesis y las prioridades (el asterisco se resuelve antes que la concatenación) le complican la vida.
+Ahí entra la notación "posfija" (o Polaca Inversa). Consiste en poner los operandos primero y los operadores después. (a|b)*c se convierte en ab|*c.. En esta notación, los paréntesis desaparecen y la pc puede leer de corrido de izquierda a derecha sin dudar qué hacer.
+
+¿Cómo lo hace el código?
+inyectarConcatenacion: En matemática, sabemos que xy es una multiplicación implícita. 
+En las expresiones regulares pasa lo mismo: "ab" es una concatenación implícita. 
+Para que nuestro parser no se pierda, esta función recorre el texto y le inyecta un punto invisible donde corresponde (ej: a.b)
+
+infijaAPosfija: Este es el famoso algoritmo "Shunting Yard" de Dijkstra. 
+Funciona como una estación de tren con una vía principal (el texto de salida) y una vía muerta o de espera (la pilaOperadores).
+
+Letras (a, b, c): Tienen pase libre. Pasan directo al texto de salida (notación posfija).
+Operadores (*, +, ., |): Se van a la pila de espera. 
+Pero ojo, acá hay jerarquías de prioridad (el '*' es el rey, luego el '.', luego el '|'). 
+Si entra a la pila un operador "débil" (como el |) y en la cima de la pila hay uno "fuerte" (como el *), el fuerte sale disparado al texto de salida para dejarle lugar.
+
+Paréntesis (): El ( entra a la pila como un tope. 
+Todo lo que venga después se apila encima de él. 
+Cuando aparece el ), el código saca todo lo que haya en la pila hacia la salida hasta encontrarse con el (.
